@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Retroverse</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/all.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: #000;
+            padding: 15px;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #e9ecef;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+        .card-header {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4 class="text-center">Retroverse</h4>
+        <a href="/">Home</a>
+        <a href="/profile">Profile</a>
+        <a href="/orders">Orders</a>
+        
+    </div>
+    
+    <div class="content">
+        <div class="container-fluid">
+            <h1 class="mb-4">Profile</h1>
+            <div class="card bg-light text-dark mb-4">
+                <div class="card-header">User Information</div>
+                <div class="card-body">
+                    <p><strong>First Name:</strong> {{customer.firstname}} </p>
+                    <p><strong>Last Name:</strong>{{customer.lastname}}</p>
+                    <p><strong>Email:</strong> {{customer.email}}</p>
+                    <p><strong>Phone:</strong> {{customer.phone}}</p>
+                    <p><strong>Address:</strong> {{customer.address}}</p>
+                    <a href="#editProfileModal" class="btn btn-primary" data-bs-toggle="modal">Edit Profile</a>
+                </div>
+            </div>
+
+            <!-- Edit Profile Modal -->
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ url_for('profile') }}">
+                                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstname" value="{{customer.firstname}} {{customer.lastname}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastname" value="{{customer.lastname}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email"  name="email" class="form-control" id="email" value="{{customer.email}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="text" name="phone" class="form-control" id="phone" value="{{customer.phone}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" name='address' class="form-control" id="address" value="{{customer.address}}">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Modal -->
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src='/static/bootstrap/js/bootstrap.bundle.js'></script>
+</body>
+</html>
