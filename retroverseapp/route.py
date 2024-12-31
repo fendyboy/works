@@ -17,7 +17,7 @@ import traceback
 def signup():
     if request.method == 'GET':
         states = db.session.query(State).all()
-        return render_template('user/signup.html',states=states)
+        return render_template('user/docs/signup.html',states=states)
     else:
         firstname = request.form.get('firstname')
         lastname = request.form.get('lastname')
@@ -71,26 +71,26 @@ def home():
 
     if men_summer_wear or  latest_products:
 
-        return render_template('user/index.html', men_summer_wear=men_summer_wear,latest_products=latest_products,women_summer_wear=women_summer_wear)
+        return render_template('user/docs/index.html', men_summer_wear=men_summer_wear,latest_products=latest_products,women_summer_wear=women_summer_wear)
     else:
         return "No products found"
 
 @app.route('/about/')
 def about():
-    return render_template('user/about.html')
+    return render_template('user/docs/about.html')
 
 @app.route('/contact/',methods=['POST','GET'])
 def contact():
-    return render_template('user/contact.html')
+    return render_template('user/docs/contact.html')
 
 
 
 @app.route('/dashboard/')
 def dashbord():
     return render_template('admin/dashboard.html')
-@app.route('/user/dashboard/')
+@app.route('/user/docs/dashboard/')
 def userdashbord():
-    return render_template('user/dashboard.html')
+    return render_template('user/docs/dashboard.html')
 
 
 
@@ -115,16 +115,16 @@ def login():
             flash('Email not found')
             return redirect('/login/')
     else:
-        return  render_template('user/login.html')
+        return  render_template('user/docs/login.html')
     
 @app.route('/clothing/')
 def clothing():
     products = Product.query.filter_by(category_id=2).all()
-    return render_template('user/clothing.html',products=products)
+    return render_template('user/docs/clothing.html',products=products)
 @app.route('/accessory/')
 def accessory():
     products = Product.query.filter_by(category_id=1).all()
-    return render_template('user/accesory.html',products=products)
+    return render_template('user/docs/accesory.html',products=products)
 
 @app.route('/search/', methods=['GET', 'POST'])
 def search():
@@ -146,9 +146,9 @@ def search():
         # Execute query and fetch results
         results = query.all()
         
-        return render_template('user/search_page.html', results=results, query=search_query)  # Show the search form
+        return render_template('user/docs/search_page.html', results=results, query=search_query)  # Show the search form
 
-    return render_template('user/search_page.html')  
+    return render_template('user/docs/search_page.html')  
     
 @app.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
@@ -194,7 +194,7 @@ def view_cart():
     customer_id = session['cust_id']
     order = Order.query.filter_by(customer_id=customer_id).first()
     if not order:
-        return render_template('user/cart_page.html', cart_items=[], total_amount=0)
+        return render_template('user/docs/cart_page.html', cart_items=[], total_amount=0)
 
     # Join Order_item with Products to get product details
     cart_items = (
@@ -203,7 +203,7 @@ def view_cart():
     total_amount = sum(item[0].amount for item in cart_items)
     resort_deets = db.session.query(Customer).get(customer_id)
     session['cart_count'] = 0
-    return render_template('user/cart_page.html', cart_items=cart_items, total_amount=total_amount, resort_deets=resort_deets)
+    return render_template('user/docs/cart_page.html', cart_items=cart_items, total_amount=total_amount, resort_deets=resort_deets)
 
 @app.route('/remove_from_cart/<int:product_id>/', methods=['POST'])
 def remove_from_cart(product_id):
@@ -236,7 +236,7 @@ def payment():
     order = Order.query.filter_by(customer_id=customer_id).first()
 
     if order:
-        return render_template('user/payment.html', order=order)
+        return render_template('user/docs/payment.html', order=order)
     else:
         return redirect('/view_cart')
 
@@ -348,13 +348,13 @@ def profile():
 
         return redirect(url_for('profile'))  # Redirect to avoid re-submission
 
-    return render_template('user/profile.html', customer=customer, custorder=custorder)
+    return render_template('user/docs/profile.html', customer=customer, custorder=custorder)
 
 @app.route('/orders/')
 def view_orders():
     customer_id = session.get('cust_id')
     orders = Order.query.filter_by(customer_id=customer_id).all()
-    return render_template('user/orders.html', orders=orders)
+    return render_template('user/docs/orders.html', orders=orders)
 
 @app.route('/logout/')
 def logout():
